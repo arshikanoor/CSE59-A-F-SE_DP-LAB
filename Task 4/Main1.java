@@ -1,69 +1,74 @@
 import java.util.List;
-abstract class Employee{
-    protected String name;
-    public Employee(String name){
-        this.name = name;
-    }
-    public abstract double getSalary();
-}
-class FullTimeEmployee extends Employee {
-    private double baseSalary;
 
-    public FullTimeEmployee(String name, double baseSalary) {
-        super(name);
-        this.baseSalary = baseSalary;
+interface Shape{
+    double area();
+}
+
+class Circle implements Shape{
+    private double radius;
+    public Circle(double radius){
+        this.radius = radius;
     }
+
 
     @Override
-    public double getSalary() {
-        return baseSalary;
+    public double area(){
+        return Math.PI * radius * radius;
     }
 }
-
-
-class Contractor extends Employee {
-
-    private double hourlyRate;
-    private int hoursWorked;
-
-    public Contractor(String name, double hourlyRate, int hoursWorked) {
-        super(name);
-        this.hourlyRate = hourlyRate;
-        this.hoursWorked = hoursWorked;
+   
+class Rectangle implements Shape{
+    private double width;
+    private double height;
+    public Rectangle(double width, double height){
+        this.width = width;
+        this.height = height;
     }
-
     @Override
-    public double getSalary() {
-        return hourlyRate * hoursWorked;
+    public double area(){
+        return width * height;
+
     }
 }
-class PayrollSystem {
 
-    public double calculateTotalPayroll(List<Employee> employees) {
+
+class Triangle implements Shape{
+    private double base;
+    private double height;
+
+    public Triangle(double base, double height){
+        this.base = base;
+        this.height = height;
+
+    }
+    @Override
+    public double area(){
+        return 0.5 * base * height;
+    }
+}
+
+class AreaCalculator{
+
+    public double calculateTotalArea(List<Shape> shapes){
         double total = 0;
-
-        for (Employee e : employees) {
-            total += e.getSalary();
+        for(Shape shape : shapes){
+            total += shape.area();
         }
-
         return total;
     }
 }
 
 
-public class Main2{
 
-    public static void main(String[] args) {
-
-        List<Employee> employees = List.of(
-                new FullTimeEmployee("Alice", 5000),
-                new Contractor("Bob", 20, 100)
+public class Main1 {
+    public static void main(String[] args){
+        List<Shape> shapes = List.of(
+            new Circle(5),
+            new Rectangle(4, 6),
+            new Triangle(3, 8)
         );
-
-        PayrollSystem payroll = new PayrollSystem();
-
-        double totalPayroll = payroll.calculateTotalPayroll(employees);
-
-System.out.println("Total Payroll: "+ totalPayroll);
+        AreaCalculator calculator = new AreaCalculator();
+        double totalArea = calculator.calculateTotalArea(shapes);
+        System.out.println("Total Area: " + totalArea);
     }
 }
